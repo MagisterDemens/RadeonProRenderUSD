@@ -1,3 +1,7 @@
+#ifdef ENABLE_RAT
+#define cameraDepth linearDepth
+#endif
+
 #include "renderDelegate.h"
 
 #include "pxr/base/tf/diagnosticMgr.h"
@@ -316,7 +320,7 @@ HdAovDescriptor HdRprDelegate::GetDefaultAovDescriptor(TfToken const& name) cons
         name != HdAovTokens->normal &&
         name != HdAovTokens->primId &&
         name != HdAovTokens->depth &&
-        name != HdAovTokens->linearDepth &&
+        name != HdAovTokens->cameraDepth &&
         !(aovId.isPrimvar && aovId.name == "st")) {
         // TODO: implement support for instanceId and elementId aov
         return HdAovDescriptor();
@@ -335,8 +339,8 @@ HdAovDescriptor HdRprDelegate::GetDefaultAovDescriptor(TfToken const& name) cons
 
     float clearColorValue = 0.0f;
     if (name == HdAovTokens->depth ||
-        name == HdAovTokens->linearDepth) {
-        clearColorValue = name == HdAovTokens->linearDepth ? 0.0f : 1.0f;
+        name == HdAovTokens->cameraDepth) {
+        clearColorValue = name == HdAovTokens->cameraDepth ? 0.0f : 1.0f;
         format = HdFormatFloat32;
     } else if (name == HdAovTokens->color) {
         format = HdFormatFloat32Vec4;
